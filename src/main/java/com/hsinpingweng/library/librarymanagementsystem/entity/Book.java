@@ -13,10 +13,10 @@ public class Book {
     @Size(min=10, max=13, message="Name should have at least 10 characters")
     private String isbn;
 
-    @Size(max=100, message="Name should have at least 2 characters")
+    @Size(min=1, max=100, message="Name should have at least 1 characters and at most 100 characters")
     private String name;
 
-    @Size(max=100, message="Description should have at most 1000 characters")
+    @Size(max=1000, message="Description should have at most 1000 characters")
     private String description;
 
     @ManyToOne(fetch=FetchType.LAZY)
