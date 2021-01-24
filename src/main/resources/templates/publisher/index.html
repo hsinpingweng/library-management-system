@@ -1,0 +1,40 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/fragments/header"></head>
+<body>
+    <nav th:replace="/fragments/nav"></nav>
+
+    <div class="container">
+        <h1 class="display-2">Publishers</h1>
+        <a href="/publishers/add" class="btn btn-primary mb-5">Add New</a>
+
+        <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
+
+        <!-- Check if there any categories in DB -->
+        <div th:if="${!publishers.empty}">
+            <table class="table sorting" id="publishers">
+
+                <tr class="home">
+                    <th>Name</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                <tr th:each="publisher: ${publishers}" th:id="'id_' + ${publisher.id}">
+                    <td th:text="${publisher.name}"></td>
+                    <td><a th:href="@{'/publishers/edit/' + ${publisher.id}}"> Edit </a></td>
+                    <td><a th:href="@{'/publishers/delete/' + ${publisher.id}}" class="confirmDeletion"> Delete </a></td>
+                </tr>
+            </table>
+        </div>
+
+        <div th:unless="${!publishers.empty}">
+            <h4 class="display-4">There are NO publishers</h4>
+        </div>
+    </div>
+
+    <div th:replace="/fragments/footer"></div>
+
+</body>
+</html>
+
