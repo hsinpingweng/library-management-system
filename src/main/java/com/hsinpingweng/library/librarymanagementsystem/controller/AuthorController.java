@@ -91,4 +91,14 @@ public class AuthorController {
 
         return "redirect:/authors/edit/" + id;
     }
+
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable int id) {
+
+        //TODO - Check foreign key constraint violation before deletion
+        authorRepo.deleteById(id);
+
+        return "redirect:/authors";
+    }
 }
