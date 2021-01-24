@@ -90,4 +90,13 @@ public class PublisherController {
         return "redirect:/publishers/edit/" + id;
     }
 
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable int id) {
+
+        //TODO - Check foreign key constraint violation before deletion
+        publisherRepo.deleteById(id);
+
+        return "redirect:/publishers";
+    }
+
 }
