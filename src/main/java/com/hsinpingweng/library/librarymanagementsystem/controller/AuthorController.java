@@ -7,10 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -56,4 +58,37 @@ public class AuthorController {
         return "redirect:/authors/add";
     }
 
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable int id, Model model) {
+
+        Author author = authorRepo.getOne(id);
+        model.addAttribute("author", author);
+
+        return "author/edit";
+    }
+
+
+    @PostMapping("/edit/{id}")
+    public String edit(@PathVariable int id, @Valid Author author, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("authorName", author.getName());
+            return "authors/edit";
+        }
+
+        Author authorExist = authorRepo.findByName(author.getName());
+
+        if (authorExist != null) {
+            // add value in session
+            redirectAttributes.addFlashAttribute("message", "Author exists!");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "Author edited");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+            author.setId(id);
+            authorRepo.save(author);
+        }
+
+        return "redirect:/authors/edit/" + id;
+    }
 }
