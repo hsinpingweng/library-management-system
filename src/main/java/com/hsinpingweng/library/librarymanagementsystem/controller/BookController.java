@@ -83,6 +83,51 @@ public class BookController {
     }
 
 
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable int id, Model model) {
+
+        Book book = bookRepo.getOne(id);
+        model.addAttribute("book", book);
+
+        List<Category> categories = categoryRepo.findAll();
+        List<Author> authors = authorRepo.findAll();
+        List<Publisher> publishers = publisherRepo.findAll();
+        model.addAttribute("categories", categories);
+        model.addAttribute("authors", authors);
+        model.addAttribute("publishers", publishers);
+
+        return "book/edit";
+    }
+
+
+
+    @PostMapping("/edit/{id}")
+    public String edit(@PathVariable int id, @Valid Book book, RedirectAttributes redirectAttributes, BindingResult bindingResult, Model model) {
+
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("bookName", book.getName());
+            return "redirect:/books/edit";
+        }
+
+        Book bookExist = bookRepo.findByIsbn(book.getIsbn());
+        if (bookExist == null || (bookExist != null && bookExist.getId() == id)) {
+
+            redirectAttributes.addFlashAttribute("message", "Book edited");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+            book.setId(id);
+            bookRepo.save(book);
+
+        } else {
+            redirectAttributes.addFlashAttribute("message", "Book exists!");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+            // add value in session
+            redirectAttributes.addFlashAttribute("bookInfo", book);
+        }
+        return "redirect:/books/edit/" + id;
+    }
+
+
+
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable int id){
 
