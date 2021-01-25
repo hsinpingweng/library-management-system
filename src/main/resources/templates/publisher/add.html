@@ -12,7 +12,6 @@
         <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
 
         <form method="POST" th:object="${publisher}" th:action="@{/publishers/add}">
-
             <div class="form-group">
                 <label for="">Name</label>
                 <input type="text" class="form-control" th:id="name" th:name="name" th:value="${publisherInfo?.name}" placeholder="Name">

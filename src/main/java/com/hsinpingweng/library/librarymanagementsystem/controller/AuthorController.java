@@ -28,8 +28,17 @@ public class AuthorController {
         List<Author> authors = authorRepo.findAll();
         model.addAttribute("authors", authors);
 
+        return "author/list";
+    }
+
+    @GetMapping("{id}")
+    public String index(@PathVariable int id, Model model){
+        Author author = authorRepo.getOne(id);
+        model.addAttribute("author", author);
+
         return "author/index";
     }
+
 
     @GetMapping("/add")
     public String add (Author author){

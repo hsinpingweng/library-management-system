@@ -6,35 +6,23 @@
     <nav th:replace="/fragments/nav"></nav>
 
     <div class="container">
-        <h1 class="display-2">Authors</h1>
-        <a href="/authors/add" class="btn btn-primary mb-5">Add New</a>
+        <h1 class="display-2" th:text="${author.name}"></h1>
+        <a href="/authors" class="btn btn-primary mb-5">Back to Authors</a>
 
-        <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
-
-        <!-- Check if there any categories in DB -->
-        <div th:if="${!authors.empty}">
-            <table class="table sorting" id="authors">
-
-                <tr class="home">
-                    <th>Name</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                </tr>
-                <tr th:each="author: ${authors}" th:id="'id_' + ${author.id}">
-                    <td th:text="${author.name}"></td>
-                    <td><a th:href="@{'/authors/edit/' + ${author.id}}"> Edit </a></td>
-                    <td><a th:href="@{'/authors/delete/' + ${author.id}}" class="confirmDeletion"> Delete </a></td>
-                </tr>
-            </table>
+        <div class="col-12 container">
+            <ul class="list-unstyled row">
+                <li class="list-item col-3 border-top py-2"><h5>Name</h5></li>
+                <li class="list-item col-9 border-top py-2" th:text="${author.name}"></li>
+                <li class="list-item col-3 border-top py-2"><h5>Description</h5></li>
+                <li class="list-item col-9 border-top py-2"><p th:text="${author.description}"></p></li>
+            </ul>
         </div>
 
-        <div th:unless="${!authors.empty}">
-            <h4 class="display-4">There are NO authors</h4>
-        </div>
+        <a class="btn btn-danger mb-5" th:href="@{'/authors/edit/' + ${author.id}}"> Edit</a>
+
     </div>
 
     <div th:replace="/fragments/footer"></div>
-
 </body>
 </html>
 
