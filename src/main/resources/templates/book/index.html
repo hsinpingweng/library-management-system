@@ -9,14 +9,12 @@
     <h1 class="display-2" th:text="${book.name}"></h1>
     <a href="/books" class="btn btn-primary mb-5">Back to books</a>
 
-    <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
-
     <div class="col-12 container">
         <ul class="list-unstyled row">
             <li class="list-item col-3 border-top py-2"><h5>Name</h5></li>
             <li class="list-item col-9 border-top py-2" th:text="${book.name}"></li>
             <li class="list-item col-3 border-top py-2"><h5>Description</h5></li>
-            <li class="list-item col-9 border-top py-2" th:text="${book.description}"></li>
+            <li class="list-item col-9 border-top py-2"><p th:text="${book.description}"></p></li>
             <li class="list-item col-3 border-top py-2"><h5>ISBN</h5></li>
             <li class="list-item col-9 border-top py-2" th:text="${book.isbn}"></li>
             <li class="list-item col-3 border-top py-2"><h5>Category</h5></li>
