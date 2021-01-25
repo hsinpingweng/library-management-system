@@ -1,0 +1,46 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/fragments/header"></head>
+<body>
+    <nav th:replace="/fragments/nav"></nav>
+
+    <div class="container">
+        <h1 class="display-2">Books</h1>
+        <a href="/books/add" class="btn btn-primary mb-5">Add New</a>
+
+        <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
+
+        <!-- Check if there any categories in DB -->
+        <div th:if="${!books.empty}">
+            <table class="table sorting" id="books">
+
+                <tr class="home">
+                    <th>Name</th>
+                    <th>Author</th>
+                    <th>Category</th>
+                    <th>Publisher</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                <tr th:each="book: ${books}" th:id="'id_' + ${book.id}">
+                    <td th:text="${book.name}"></td>
+                    <td th:text="${book.author.name}"></td>
+                    <td th:text="${book.category.name}"></td>
+                    <td th:text="${book.publisher.name}"></td>
+                    <td><a th:href="@{'/books/edit/' + ${book.id}}"> Edit </a></td>
+                    <td><a th:href="@{'/books/delete/' + ${book.id}}" class="confirmDeletion"> Delete </a></td>
+                </tr>
+            </table>
+        </div>
+
+        <div th:unless="${!books.empty}">
+            <h4 class="display-4">There are NO books</h4>
+        </div>
+    </div>
+
+    <div th:replace="/fragments/footer"></div>
+
+</body>
+</html>
+
