@@ -94,10 +94,15 @@ public class AuthorController {
 
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable int id) {
+    public String delete(@PathVariable int id, RedirectAttributes redirectAttributes) {
 
-        //TODO - Check foreign key constraint violation before deletion
-        authorRepo.deleteById(id);
+        Author author = authorRepo.getOne(id);
+        if (!author.getBooks().isEmpty()) {
+            redirectAttributes.addFlashAttribute("message", "Can not delete this author. Still have books belong to this author.");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+        } else {
+            authorRepo.deleteById(id);
+        }
 
         return "redirect:/authors";
     }

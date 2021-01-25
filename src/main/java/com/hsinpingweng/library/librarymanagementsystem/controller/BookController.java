@@ -131,7 +131,6 @@ public class BookController {
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable int id){
 
-        //TODO - Check foreign key constraint violation before deletion
         bookRepo.deleteById(id);
 
         return "redirect:/books";
