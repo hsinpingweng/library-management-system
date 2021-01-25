@@ -98,10 +98,15 @@ public class CategoryController {
 
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable int id){
+    public String delete(@PathVariable int id, RedirectAttributes redirectAttributes){
 
-        //TODO - Check foreign key constraint violation before deletion
-        categoryRepo.deleteById(id);
+        Category category = categoryRepo.getOne(id);
+        if (!category.getBooks().isEmpty()) {
+            redirectAttributes.addFlashAttribute("message", "Can not delete this category. Still have books belong to this category.");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+        } else {
+            categoryRepo.deleteById(id);
+        }
 
         return "redirect:/categories";
     }

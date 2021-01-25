@@ -51,4 +51,12 @@ public class Author {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
+    }
 }

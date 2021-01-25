@@ -1,5 +1,6 @@
 package com.hsinpingweng.library.librarymanagementsystem.controller;
 
+import com.hsinpingweng.library.librarymanagementsystem.entity.Category;
 import com.hsinpingweng.library.librarymanagementsystem.entity.Publisher;
 import com.hsinpingweng.library.librarymanagementsystem.repository.PublisherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,10 +92,17 @@ public class PublisherController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable int id) {
+    public String delete(@PathVariable int id, RedirectAttributes redirectAttributes) {
 
-        //TODO - Check foreign key constraint violation before deletion
-        publisherRepo.deleteById(id);
+        Publisher publisher = publisherRepo.getOne(id);
+        if (!publisher.getBooks().isEmpty()) {
+            redirectAttributes.addFlashAttribute("message", "Can not delete this publisher. Still have books belong to this publisher.");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+        } else {
+            publisherRepo.deleteById(id);
+        }
+
+
 
         return "redirect:/publishers";
     }
