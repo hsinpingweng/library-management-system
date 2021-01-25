@@ -43,8 +43,17 @@ public class BookController {
         List<Book> books = bookRepo.findAll();
         model.addAttribute("books", books);
 
+        return "book/list";
+    }
+
+    @GetMapping("{id}")
+    public String index(@PathVariable int id, Model model){
+        Book book = bookRepo.getOne(id);
+        model.addAttribute("book", book);
+
         return "book/index";
     }
+
 
     @GetMapping("/add")
     public String add(Book book, Model model) {
